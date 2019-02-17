@@ -55,8 +55,8 @@ ROOT_URLCONF = 'aesthetic_computation.urls'
 
 WSGI_APPLICATION = 'aesthetic_computation.wsgi.application'
 
-#MEDIA_ROOT = "/var/www/html/exp/user/"
-#MEDIA_URL  = "http://www.illustris-project.org/exp/user/"
+MEDIA_ROOT = "/var/www/html/static/ac/projects/"
+MEDIA_URL  = "http://freyator.bc.rzg.mpg.de/static/ac/projects/"
 
 # Database config ( https://docs.djangoproject.com/en/1.6/ref/settings/#databases )
 DATABASES = {

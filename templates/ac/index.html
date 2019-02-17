@@ -11,7 +11,7 @@
             <div class="col-12 col-md-6 col-lg-3 no-padding">
                 <div class="portfolio-content">
                     <figure>
-                        <img src="{% static 'ac/projects/' %}{{ post.id }}.jpg" alt="">
+                        <img src="{{ post.image_460px.url }}" alt="">
                     </figure>
 
                     <a href="{% url 'post' id=post.id %}">
