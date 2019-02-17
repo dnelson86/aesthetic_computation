@@ -1,0 +1,70 @@
+{% extends "ac/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="outer-container">
+    <div class="container wide-entry single-entry">
+        <!-- NOTE: need to handle adding wide-entry or not, either in js or django -->
+
+        <div class="row">
+            <div class="col-12 no-padding">
+                <span id="post-nav" class="flex justify-content-between align-items-center">
+                    <span><a href="#"><img src="{% static 'ac/images/angle-left.png' %}" alt="Previous"></a></span>
+                    <span>#{{ post.id }}</span>
+                    <span><a href="#"><img src="{% static 'ac/images/angle-right.png' %}" alt="Next"></a></span>
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 no-padding" style="">
+                <figure class="big-img">
+                    <img src="{% static 'ac/projects/1_big.png' %}" alt="">
+                </figure>
+            </div>
+        </div>
+
+        <div class="row no-padding">
+            <div class="col-12 col-lg-8">
+                <h1 class="entry-header">{{ post.title }}</h1>
+
+                <div class="entry-content">
+                    <p>Composite image combining gas temperature and shock mach number, in black and white. The horizontal scale of the image is ~100 Mpc (~320 million light years), around the second most massive cluster in TNG100-1.
+
+                    Get the latest fashion tips and outfit ideas from your favorite celebrities and designers. Click through runway and front row photos from fashion week shows in New York, London, Paris, and Milan. Plus: browse key accessories like bags, shoes, and sunglasses, must-have denim.</p>
+
+                    <p class="methods"><i>Methods:</i> mass-weighted line of sight projections, orthographic projection.</p>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-3 offset-lg-1">
+                <div class="entry-meta">
+                    <div class="meta-sec">
+                        <label>date added</label>
+                        <span class="date-format"><a href="#">December 20, 2018</a></span>
+                    </div>
+
+                    <div class="meta-sec">
+                        <label>categories</label>
+                        <span><a href="#">3d</a>, <a href="#">cosmological</a></span>
+                    </div>
+
+                    <div class="meta-sec">
+                        <label>author</label>
+                        <span>dylan nelson</span>
+                    </div>
+
+                    <div class="meta-sec">
+                        <label>origin</label>
+                        <span><a href="#">arxiv 3532.49442</a></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div> <!-- container -->
+</div> <!-- outer-container -->
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% load pipeline %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>aesthetic computation</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Dylan Nelson">
+
+    {% stylesheet 'base' %}
+    <link rel="icon" type="image/png" href="{% static 'ac/favicon.png' %}">
+</head>
+
+<body>
+<header class="site-header">
+    <div class="site-branding">
+        <h1 class="site-title"><a href="/" rel="home"><img src="{% static 'ac/images/logo-sm.png' %}"></a></h1>
+    </div>
+
+    <div class="stripe-menu">
+        <div class="menu-icon">
+            <img src="{% static 'ac/images/menu-open.png' %}" alt="open menu">
+        </div>
+
+        <div class="menu-close-icon">
+            <img src="{% static 'ac/images/menu-close.png' %}" alt="close menu">
+        </div>
+    </div>
+</header>
+
+<nav class="site-navigation flex flex-column">
+    <div class="site-branding d-none d-lg-block ">
+        <h1 class="site-title"><a href="/" rel="home"><img src="{% static 'ac/images/logo-lg.png' %}"></a></h1>
+    </div>
+
+    <div class="info-box">
+        <p class="info-txt">lots of content here and here and here, lots of content here and here and here, 
+        lots of content here and here and here, lots of content here and here and here</p>
+
+        <p class="info-txt">lots of content here and here and here, lots of content here and here and here, 
+        lots of content here and here and here, lots of content here and here and here. and some more lots of content here and here and here, lots of content here and here and here, 
+        lots of content here and here and here, lots of content here and here and here</p>
+
+        <p class="info-txt">lots of content here and here and here, lots of content here and here and here, 
+        lots of content here and here and here, lots of content here and here and here</p>
+
+        <p class="info-txt"> <span class="redbar"></span> <a href="mailto:dnelson@destinati.com">Dylan Nelson</a></p>
+    </div>
+
+</nav>
+
+<div class="nav-bar-sep d-lg-none"></div>
+
+{% block content %}
+{% endblock %}
+
+{% javascript 'base' %}
+
+</body>
+</html>
