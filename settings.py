@@ -16,14 +16,14 @@ DEBUG = True # change to False for production
 ALLOWED_HOSTS = ['.freyator.bc.rzg.mpg.de']
 
 INSTALLED_APPS = (
-    'aesthetic_computation',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
     'django.contrib.sessions',
     'django.contrib.auth',
     'django.contrib.messages',
-    #'django.contrib.humanize',
-    'pipeline', # replaces django.contrib.staticfiles
+    'django.contrib.admin',
+    'pipeline',
+    'aesthetic_computation',
 )
 
 MIDDLEWARE_CLASSES = (

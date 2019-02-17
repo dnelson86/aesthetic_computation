@@ -11,11 +11,11 @@ urlpatterns = [
     # single post
     url(r'^(?P<id>[0-9]+)/$', post, name='post'),
 
-    # category listing (must come after post)
-    url(r'^(?P<category>[A-Za-z0-9]+)/', home, name='category'),
-
     # admin
     url(r'^admin/', admin.site.urls),
+
+    # category listing (must come last)
+    url(r'^(?P<category_name>[A-Za-z0-9]+)/', home, name='category'),
 ]
 
 handler404 = '.views.handler404'

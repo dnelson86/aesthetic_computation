@@ -392,8 +392,11 @@ p.info-txt {
     opacity: 0.3;
     transition: all 0.35s;
 }
+#post-nav img.nolink {
+    opacity: 0.05;
+}
 
-#post-nav img:hover {
+#post-nav a img:hover {
     opacity: 0.7;
     transition: all 0.35s;
 }

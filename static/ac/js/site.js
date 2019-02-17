@@ -30,4 +30,23 @@
       }
     });
 
+    // individual post page: arrow keys trigger page-redirect navigation
+    var prev_link = $("#prev_link");
+    var next_link = $("#next_link");
+
+    $(document).keyup(function(e) {
+      if (e.keyCode == 37) { // left arrow
+        if (prev_link) {
+          window.location.replace(prev_link.attr("href"));
+        }
+      }
+
+      if (e.keyCode == 39) { // right arrow
+        if (next_link) {
+          window.location.replace(next_link.attr("href"));
+        }
+      }
+
+    });
+
 })(jQuery);
