@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     # category listing (must come last)
-    url(r'^(?P<category_name>[A-Za-z0-9]+)/', home, name='category'),
+    url(r'^(?P<category_name>[A-Za-z0-9&\-]+)/', home, name='category'),
 ]
 
 handler404 = '.views.handler404'

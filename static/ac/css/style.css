@@ -190,7 +190,33 @@ p.info-txt {
     height: 78px;
 }
 
-@media screen and (max-width: 992px) {
+
+/* bootstrap 4 xxl size class */
+@media (min-width: 1920px) {
+    .col-xxl-custom {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+
+@media (min-width: 2380px) {
+    /* five * 460px + (80px navbar) = 2380px, after which images are getting upscaled */
+    .col-xxl-custom {
+        flex: 0 0 16.666%;
+        max-width: 16.666%;
+    }
+}
+
+@media (min-width: 2840px) {
+    .col-xxl-custom {
+        flex: 0 0 12.5%;
+        max-width: 12.5%;
+    }
+}
+
+/* sidebar customization by screen size */
+@media screen and (max-width: 992px)
+{
     .site-header {
         position: fixed;
         top: 0;
@@ -240,7 +266,8 @@ p.info-txt {
 
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 992px)
+{
     .site-header,
     .site-navigation {
         position: fixed;
@@ -325,14 +352,28 @@ p.info-txt {
     /*height: 49vh; */ /* testing horizontal scrolling, 2 rows */
     height: auto;
     min-height: 100%;
+
+    /* style testing: */
+    /*filter: saturate(0.0);
+    opacity: 0.8;
+    transition: all 0.35s;*/
 }
+
+/*
+.portfolio-content figure img:hover {
+    filter: saturate(1.0);
+    opacity: 1.0;
+}
+*/
 
 .portfolio-content .entry-content {
     position: absolute;
+    padding: 15px;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    /* style testing: (disable the 1 line below) */
     background: rgba(255,255,255,.8); /*rgba(0,0,0,.8);*/
     text-align: center;
     visibility: hidden;
@@ -356,7 +397,7 @@ p.info-txt {
 
 .portfolio-content .entry-content p {
     padding: 0;
-    margin: 10px;
+    margin: 20px;
     font-size: 0.875rem;
     color: #bbb;
 }
@@ -374,12 +415,20 @@ p.info-txt {
 
 /* single item page */
 
-@media (min-width: 1940px) {
-  /* only add wide-entry class next to 'container' if available image width is at least 1600px */
+@media (min-width: 1900px) {
+  /* only add wide-entry class next to 'container' if available image width is at least 1400px */
+  /* and note this only takes effect for large screens (1920+) */
   .wide-entry {
-      max-width: 1600px; /* can be 100% for full */
+      max-width: 1400px; /* can be 100% for full */
   }
 }
+
+@media (min-width: 2500px) {
+  .wide-entry-xl {
+      max-width: 1700px;
+  }
+}
+
 
 #post-nav {
     width: 100%;
