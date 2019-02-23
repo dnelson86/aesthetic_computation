@@ -67,3 +67,29 @@ def post(request, id):
     context = {'post':post, 'cats':cats, 'wide_entry':wide_entry,
                'prev_post_id':prev_post_id, 'next_post_id':next_post_id}
     return render(request, 'ac/post.html', context)
+
+# arxiv functionality
+def arxiv(request, date=None):
+    from .settings import MEDIA_ROOT, MEDIA_URL
+    import os
+    import glob
+
+    baseurl = MEDIA_URL.replace("projects/","arxiv/")
+
+    # get list of directories
+    dirs = glob.glob(MEDIA_ROOT + "../arxiv/*")
+    dirs.sort(key = os.path.getmtime)
+    dirs = [dir.rsplit("/")[-1] for dir in dirs]
+
+    # if a date specified, get list of all filenames too
+    images = []
+    if date is not None and date in dirs:
+        images = glob.glob(MEDIA_ROOT + "../arxiv/%s/*" % date)
+        images = [image.rsplit("/")[-1] for image in images]
+        images.sort()
+
+        # list of (image filename, arxiv ID) tuples
+        images = [[image,image.split("_")[0]] for image in images]
+
+    context = {'dirs':dirs, 'date':date, 'images':images, 'baseurl':baseurl}
+    return render(request, 'ac/arxiv.html', context)

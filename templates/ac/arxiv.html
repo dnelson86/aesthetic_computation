@@ -1,0 +1,41 @@
+{% extends "ac/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="outer-container home-page">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-12">
+
+        <h3 style='margin: 15px;'>arXiv dates available:</h3>
+
+        <ul>
+{% for dir in dirs %}
+{% if dir == date %}
+          <li>{{dir}} (currently shown)</li>
+{% else %} 
+          <li><a href="{% url 'arxiv' date=dir %}">{{dir}}</a></li>
+{% endif %}
+{% endfor %}
+        </ul>
+
+      </div>
+    </div> <!-- row -->
+
+    <hr>
+
+    <div class="row">
+      <div class="col-12" style="flex-flow: row wrap;">
+
+{% for image in images %}
+        <a href="http://arxiv.org/abs/{{image.1}}"><img style="display: inline-block;" src="{{baseurl}}{{date}}/{{image.0}}"></a>
+{% endfor %}
+
+      </div>
+    </div> <!-- row -->
+
+  </div> <!-- container-fluid -->
+</div> <!-- outer-container -->
+
+{% endblock %}
