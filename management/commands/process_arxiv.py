@@ -11,6 +11,7 @@ from PIL import Image
 import glob
 import re
 import tarfile
+import shutil
 
 class Command(BaseCommand):
     """ Search the 'new' articles on arXiv each day, record those that mention Illustris in the abstract."""
@@ -24,45 +25,47 @@ class Command(BaseCommand):
         baseDir = "/var/www/html/static/ac/arxiv/"
         maxImagePx = 800
 
-        pubs = []
+        # cleanup folders older than a week or two
+        cur_dirs = sorted(glob.glob(baseDir + "*"))[::-1]
 
+        for dir in cur_dirs[3:]:
+            print('Cleanup: [%s]' % dir)
+            shutil.rmtree(dir)
+
+        # no need to run when there aren't new arxiv postings
         if timezone.now().strftime("%a") in ['Sat','Sun']:
             return
-
-        # todo: add here a cleanup of all folders older than a week or two
         
-        try:
-            # get today's arxiv postings
-            arxivUrl = 'http://export.arxiv.org/rss/astro-ph/new?version=2.0'
-            
-            # get page and parse XML
-            arxiv = minidom.parse(urlopen(arxivUrl))
-            items = arxiv.getElementsByTagName('item')
+        # get today's arxiv postings
+        pubs = []
 
-            for item in items:
-                title = item.getElementsByTagName('title')[0].childNodes[0].data
-                title = title[:title.rfind(' (arXiv')]
+        arxivUrl = 'http://export.arxiv.org/rss/astro-ph/new?version=2.0'
+        
+        # get page and parse XML
+        arxiv = minidom.parse(urlopen(arxivUrl))
+        items = arxiv.getElementsByTagName('item')
 
-                link  = item.getElementsByTagName('link')[0].childNodes[0].data
-                id    = link[link.rfind('/')+1:]
+        for item in items:
+            title = item.getElementsByTagName('title')[0].childNodes[0].data
+            title = title[:title.rfind(' (arXiv')]
 
-                desc      = item.getElementsByTagName('description')[0].childNodes[0].data
-                authStart = desc.find('Authors:')
-                authEnd   = desc.find('</div>',authStart)
-                abstract  = desc[authEnd+1:]
-                abstract  = re.sub('<[^<]+?>', '', abstract).strip() # strip all html tags
+            link  = item.getElementsByTagName('link')[0].childNodes[0].data
+            id    = link[link.rfind('/')+1:]
 
-                # keep if abstract contains one of our search string(s)
-                for searchStr in searchStrs:
-                    if searchStr.lower() in abstract.lower():
-                        pubs.append({'title':title,'link':link,'id':id})
-                        break
+            desc      = item.getElementsByTagName('description')[0].childNodes[0].data
+            authStart = desc.find('Authors:')
+            authEnd   = desc.find('</div>',authStart)
+            abstract  = desc[authEnd+1:]
+            abstract  = re.sub('<[^<]+?>', '', abstract).strip() # strip all html tags
 
-            self.stdout.write('daily_arxiv_scrape: found matching [%d of %d] (%s)' % 
-                              (len(pubs),len(items),timezone.now()))
+            # keep if abstract contains one of our search string(s)
+            for searchStr in searchStrs:
+                if searchStr.lower() in abstract.lower():
+                    pubs.append({'title':title,'link':link,'id':id})
+                    break
 
-        except Exception as e:
-            raise CommandError('Error: daily_arxiv_scrape failed: %s' % e)
+        self.stdout.write('daily_arxiv_scrape: found matching [%d of %d] (%s)' % 
+                          (len(pubs),len(items),timezone.now()))
 
         # make a directory for this day
         saveDir = baseDir + timezone.now().strftime("%Y-%U-%a") + "/"
@@ -123,4 +126,4 @@ class Command(BaseCommand):
             except:
                 pass
 
-        # todo: filter function, which images to keep?
+        # todo: filter function/algorithm (pre-trained network?), keep only vis-like (not plot-like) images
