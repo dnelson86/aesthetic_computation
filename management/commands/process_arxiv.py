@@ -20,7 +20,7 @@ class Command(BaseCommand):
         pass
 
     def handle(self, *args, **options):
-        searchStrs = ['simulation','simulate','computation','numerical']
+        searchStrs = ['simulation','simulate','computation','numerical','hydrodynamic','code']
         validExts = ['jpg','png','pdf'] # eps, ps
         baseDir = "/var/www/html/static/ac/arxiv/"
         maxImagePx = 800
@@ -28,7 +28,7 @@ class Command(BaseCommand):
         # cleanup folders older than a week or two
         cur_dirs = sorted(glob.glob(baseDir + "*"))[::-1]
 
-        for dir in cur_dirs[3:]:
+        for dir in cur_dirs[10:]:
             print('Cleanup: [%s]' % dir)
             shutil.rmtree(dir)
 
@@ -64,7 +64,7 @@ class Command(BaseCommand):
                     pubs.append({'title':title,'link':link,'id':id})
                     break
 
-        self.stdout.write('daily_arxiv_scrape: found matching [%d of %d] (%s)' % 
+        self.stdout.write('process_arxiv: found matching [%d of %d] (%s)' % 
                           (len(pubs),len(items),timezone.now()))
 
         # make a directory for this day
@@ -85,7 +85,11 @@ class Command(BaseCommand):
             buf.seek(0) # convert the string into a memory buffer allowing random seeking
 
             # inspect .tar.gz file
-            archive = tarfile.open(mode="r:gz", fileobj=buf)
+            try:
+                archive = tarfile.open(mode="r:gz", fileobj=buf)
+            except OSError:
+                print(' source not a gzip, skip')
+                continue
 
             # extract images into the paper directory
             for i, file in enumerate(archive.getnames()):
@@ -101,9 +105,12 @@ class Command(BaseCommand):
                 if ext == 'pdf':
                     # rasterize and save
                     out_filename = out_filename.replace('.pdf','.jpg')
-                    im_raster = convert_from_bytes(im.read(), dpi=75)
-                    if len(im_raster):
-                        im_raster[0].save(saveDir + out_filename, 'JPEG')
+                    try:
+                        im_raster = convert_from_bytes(im.read(), dpi=75)
+                        if len(im_raster):
+                            im_raster[0].save(saveDir + out_filename, 'JPEG')
+                    except:
+                        print(' failed to convert [%s], skip' % out_filename)
                 else:
                     # save directly
                     with open(saveDir + out_filename,'wb') as f:
@@ -115,15 +122,12 @@ class Command(BaseCommand):
         images = glob.glob(saveDir + "*")
 
         for filename in images:
-            try:
-                im = Image.open(filename)
+            im = Image.open(filename)
 
-                if im.size[0] <= maxImagePx and im.size[1] <= maxImagePx:
-                    continue
+            if im.size[0] <= maxImagePx and im.size[1] <= maxImagePx:
+                continue
 
-                im.thumbnail((maxImagePx,maxImagePx), Image.ANTIALIAS)
-                im.save(filename)
-            except:
-                pass
+            im.thumbnail((maxImagePx,maxImagePx), Image.ANTIALIAS)
+            im.save(filename)
 
         # todo: filter function/algorithm (pre-trained network?), keep only vis-like (not plot-like) images
