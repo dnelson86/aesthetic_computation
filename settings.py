@@ -11,7 +11,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-DEBUG = True # change to False for production
+DEBUG = False # change to False for production
 
 ALLOWED_HOSTS = ['.acomp.tng-project.org']
 

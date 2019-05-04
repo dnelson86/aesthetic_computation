@@ -79,7 +79,12 @@ class Command(BaseCommand):
             source_url = "https://arxiv.org/e-print/" + pub['id']
             print(source_url)
 
-            targz = urlopen(source_url)
+            try:
+                targz = urlopen(source_url)
+            except:
+                print(' failed to open url, skipping')
+                continue
+
             buf = BytesIO()
             buf.write(targz.read())
             buf.seek(0) # convert the string into a memory buffer allowing random seeking
@@ -87,8 +92,8 @@ class Command(BaseCommand):
             # inspect .tar.gz file
             try:
                 archive = tarfile.open(mode="r:gz", fileobj=buf)
-            except OSError:
-                print(' source not a gzip, skip')
+            except:
+                print(' error extracting source, skip')
                 continue
 
             # extract images into the paper directory
@@ -122,12 +127,15 @@ class Command(BaseCommand):
         images = glob.glob(saveDir + "*")
 
         for filename in images:
-            im = Image.open(filename)
+            try:
+                im = Image.open(filename)
 
-            if im.size[0] <= maxImagePx and im.size[1] <= maxImagePx:
-                continue
+                if im.size[0] <= maxImagePx and im.size[1] <= maxImagePx:
+                    continue
 
-            im.thumbnail((maxImagePx,maxImagePx), Image.ANTIALIAS)
-            im.save(filename)
+                im.thumbnail((maxImagePx,maxImagePx), Image.ANTIALIAS)
+                im.save(filename)
+            except:
+                print(' failed to resize [%s], skip' % filename)
 
         # todo: filter function/algorithm (pre-trained network?), keep only vis-like (not plot-like) images
