@@ -366,36 +366,54 @@ p.info-txt {
 }
 */
 
+
+/* without any hover (next two rules) */
 .portfolio-content .entry-content {
-    position: absolute;
-    padding: 15px;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  padding: 15px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0); /* nothing visible */
+}
+
+.portfolio-content .entry-content h3,p.cats {
+  visibility: hidden;
+}
+
+@media (hover)
+{
+  /* typical desktop behavior */
+  .portfolio-content .entry-content {
     /* style testing: (disable the 1 line below) */
     background: rgba(255,255,255,.8); /*rgba(0,0,0,.8);*/
     text-align: center;
     visibility: hidden;
     opacity: 0;
-    transition: all 0.35s;
-}
+    /*transition: all 0.35s;*/
+  }
 
-.portfolio-content:hover .entry-content {
+  .portfolio-content .entry-content h3,p.cats {
+    visibility: visible;
+  }
+
+  .portfolio-content:hover .entry-content {
     visibility: visible;
     opacity: 1.0;
-}
+  }
 
-.portfolio-content:hover .entry-content h3:hover {
-    color: #222;
-    transition: all 0.5s;
+  .portfolio-content:hover .entry-content h3:hover {
+    /*color: #222;*/
+    /*transition: all 0.5s;*/
+  }
 }
 
 .portfolio-content .entry-content h3 {
     color: #888;
 }
 
-.portfolio-content .entry-content p {
+.portfolio-content .entry-content p.cats {
     padding: 0;
     margin: 20px;
     font-size: 0.875rem;
