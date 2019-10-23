@@ -1,0 +1,135 @@
+{% load pipeline %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>aas job map</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Dylan Nelson">
+
+    <link rel="stylesheet" href="{% static 'ac/leaflet/leaflet.css' %}">
+    <script src="{% static 'ac/leaflet/leaflet.js' %}"></script>
+
+    <style>
+        body {
+          background: #fff;
+        }
+        p {
+          color: #444;
+          text-align: center;
+        }
+        a {
+          color: #527cc8;
+          text-decoration: none;
+        }
+        a:hover {
+          color: #123c88;
+        }
+        #map {
+          border: 1px solid #ccc;
+          height: calc(100vh - 5em); /*600px;*/
+        }
+    </style>
+</head>
+
+
+
+<body>
+
+<p>AAS Job Map. Last updated: <b><span id="info">(loading...)</span></b>. 
+Questions? Comments? <a href="mailto:dnelson@mpa-garching.mpg.de">dnelson@mpa-garching.mpg.de</a></p>
+
+<div id="map"></div>
+
+
+
+<script>
+// initialize leaflet map
+var options = {worldCopyJump:true};
+var mymap = L.map('map', options).setView([31, -30], 3);
+
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+	attribution: 'Mapbox | dnelson',
+	maxZoom: 13,
+	id: 'mapbox.streets', // streets, light
+	accessToken: 'pk.eyJ1IjoiZG5lbHNvbjg2IiwiYSI6ImNrMXo2ZTBqNzBtazIzaWxpbGNxZ3Q2cXkifQ.HIwK73jPEhBwla323RA2ew'
+}).addTo(mymap);
+</script>
+
+
+
+<script>
+// ajax request for jsons JSON
+var request = new XMLHttpRequest();
+request.open('GET', 'https://www.aesthetic-computation.com/{% static "ac/aasjobmap.json" %}', true);
+
+request.onload = function() {
+  if (this.status >= 200 && this.status < 400) {
+    // success
+    var data = JSON.parse(this.response);
+
+    // indicate success
+    var el = document.getElementById('info');
+    el.innerHTML = data[0]["last updated"] + " (" + data.length + " currently listed jobs)";
+
+    // add markers to map
+    var markers_tenure = [];
+    var markers_postdoc = [];
+    var markers_other = [];
+
+    var icon = L.Icon.Default.extend({ options : L.Icon.Default.prototype.options });
+
+    for(var i = 1; i < data.length; i++)
+    {
+        var popupText = "<b>" + data[i].location + "</b>";
+        popupText += "<br>" + data[i].institute;
+        popupText += "<br><a href='" + data[i].link + "'>" + data[i].title + "</a>";
+
+        // set icon color for different types
+        if(data[i].type == "faculty")
+          var iconUrl = "marker-icon.png";
+        else if(data[i].type == "postdoc")
+          var iconUrl = "marker-icon_b.png";
+        else // "other"
+          var iconUrl = "marker-icon_c.png";
+
+        var icon_loc = new icon({'iconUrl': iconUrl});
+
+        // create marker and add to list
+        var marker = L.marker([data[i].lat,data[i].long],{icon:icon_loc}).bindPopup(popupText);
+
+        if(data[i].type == "faculty")
+          markers_tenure.push( marker );
+        else if(data[i].type == "postdoc")
+          markers_postdoc.push( marker );
+        else
+          markers_other.push( marker );
+    }
+
+    // add each marker list as an overlay layer, and then add a corresponding control
+    var layers = {"Tenure-Track Faculty" : L.layerGroup(markers_tenure).addTo(mymap),
+                  "Postdocs"             : L.layerGroup(markers_postdoc).addTo(mymap),
+                  "All Other"            : L.layerGroup(markers_other).addTo(mymap)};
+
+    L.control.layers(null, layers).addTo(mymap);
+
+  } else {
+    // ajax: reached our target server, but it returned an error
+    document.getElementById('info').innerHHTML = "Failed to load data!";
+  }
+};
+
+request.onerror = function() {
+  // ajax: connection error of some sort
+  document.getElementById('info').innerHHTML = "Failed to load data!";
+};
+
+request.send();
+</script>
+
+
+
+</body>
+</html>

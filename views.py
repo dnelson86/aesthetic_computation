@@ -93,3 +93,9 @@ def arxiv(request, date=None):
 
     context = {'dirs':dirs, 'date':date, 'images':images, 'baseurl':baseurl}
     return render(request, 'ac/arxiv.html', context)
+
+# aas job map
+def aasjobmap(request):
+    context = {}
+    return render(request, 'ac/aasjobmap.html', context)
+

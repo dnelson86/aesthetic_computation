@@ -1,0 +1,14 @@
+[
+    {
+        "link": "link here",
+        "lat": 234.342,
+        "long": 123.993,
+        "location": "loc here"
+    },
+    {
+        "link": "link here2",
+        "lat": 234.222,
+        "long": 123.222,
+        "location": "loc here2"
+    }
+]

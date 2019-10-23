@@ -13,7 +13,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 DEBUG = False # change to False for production
 
-ALLOWED_HOSTS = ['.acomp.tng-project.org']
+ALLOWED_HOSTS = ['.aesthetic-computation.com']
 
 INSTALLED_APPS = (
     'django.contrib.contenttypes',
@@ -56,7 +56,7 @@ ROOT_URLCONF = 'aesthetic_computation.urls'
 WSGI_APPLICATION = 'aesthetic_computation.wsgi.application'
 
 MEDIA_ROOT = "/var/www/html/static/ac/projects/"
-MEDIA_URL  = "http://acomp.tng-project.org/static/ac/projects/"
+MEDIA_URL  = "https://www.aesthetic-computation.com/static/ac/projects/"
 
 # Database config ( https://docs.djangoproject.com/en/1.6/ref/settings/#databases )
 DATABASES = {
@@ -108,6 +108,6 @@ STATICFILES_FINDERS = (
     'pipeline.finders.PipelineFinder',
 )
 
-BASE_WEB_ADDR = "http://acomp.tng-project.org/"
+BASE_WEB_ADDR = "https://www.aesthetic-computation.com/"
 STATIC_URL = "/static_dev/" # TODO: change to 'static/' for production
 STATIC_ROOT = "/srv/www/html/static_dev/" # where collectstatic puts things (TODO: change to 'static/' for prod)

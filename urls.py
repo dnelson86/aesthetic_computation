@@ -2,7 +2,7 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from .views import home, post, arxiv
+from .views import home, post, arxiv, aasjobmap
 
 urlpatterns = [
     # index
@@ -17,6 +17,9 @@ urlpatterns = [
 
     # admin
     url(r'^admin707/', admin.site.urls),
+
+    # aas job map
+    url(r'^aasjobmap/', aasjobmap, name='aasjobmap'),
 
     # category listing (must come last)
     url(r'^(?P<category_name>[A-Za-z0-9&\-]+)/', home, name='category'),

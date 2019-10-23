@@ -118,8 +118,11 @@ class Command(BaseCommand):
                         print(' failed to convert [%s], skip' % out_filename)
                 else:
                     # save directly
-                    with open(saveDir + out_filename,'wb') as f:
-                        f.write(im.read())
+                    try:
+                        with open(saveDir + out_filename,'wb') as f:
+                            f.write(im.read())
+                    except:
+                        print(' failed to save [%s], skip' % out_filename)
 
                 #print(' '+file, out_filename)
 
