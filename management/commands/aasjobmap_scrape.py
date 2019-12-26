@@ -80,6 +80,10 @@ class Command(BaseCommand):
             location_name = location_name.replace("Multiple Locations,","") # generalize
             if "---" in location_name and "Various Canadian" in institute:
                 location_name = "Toronto, Canada"
+            if "Garching near Munich" in location_name:
+                location_name = "Garching, Germany"
+            if "Berlin/" in location_name:
+                location_name = "Berlin, Germany"
 
             # geolocate to (latitude,longitude), caching
             if location_name in geocache:

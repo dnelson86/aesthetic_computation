@@ -8,6 +8,7 @@ To update static files:
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import aesthetic_computation.secauth as secauth
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -64,15 +65,15 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'djangodb_ac',
         'USER': 'djangouser_ac',
-        'PASSWORD': 'f98htnVR&(N=',
+        'PASSWORD': secauth.ac_dbpass,
         'OPTIONS': {'unix_socket':'/var/lib/mysql/mysql.sock'}
     }
 }
 
-SECRET_KEY = '3krd+n2eu+%m+ax97u9djt_reffbd$*+uuk6x=+n71wx1ql)#^'
+SECRET_KEY = secauth.sec_key
 
 #ADMINS = (('Dylan Nelson','dnelson@mpa-garching.mpg.de'))
-PREPEND_WWW = False # TODO: re-enable after real domain name
+PREPEND_WWW = True
 
 # Internationalization ( https://docs.djangoproject.com/en/1.6/topics/i18n/ )
 LANGUAGE_CODE = 'en-us'
@@ -109,5 +110,6 @@ STATICFILES_FINDERS = (
 )
 
 BASE_WEB_ADDR = "https://www.aesthetic-computation.com/"
-STATIC_URL = "/static_dev/" # TODO: change to 'static/' for production
-STATIC_ROOT = "/srv/www/html/static_dev/" # where collectstatic puts things (TODO: change to 'static/' for prod)
+STATIC_URL = "/static/"
+STATIC_ROOT = "/srv/www/html/static/" # where collectstatic puts things
+
