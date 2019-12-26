@@ -14,7 +14,8 @@ import tarfile
 import shutil
 
 class Command(BaseCommand):
-    """ Search the 'new' articles on arXiv each day, record those that mention Illustris in the abstract."""
+    """ Search the 'new' articles on arXiv each day, download source, extract figures, and save as local 
+    images, for all papers which mention 'simulation' type words in the abstract."""
 
     def add_arguments(self, parser):
         pass
