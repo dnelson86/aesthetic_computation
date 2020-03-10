@@ -14,7 +14,7 @@ class Command(BaseCommand):
     """ Download and parse the AAS job register page, create JSON file."""
 
     baselink = "https://jobregister.aas.org"
-    savepath = "/var/www/html/static_dev/ac/"
+    savepath = "/var/www/html/static/ac/"
     random_amp = 0.02 # in {lat,long} for multiple entries in one city
 
     def add_arguments(self, parser):

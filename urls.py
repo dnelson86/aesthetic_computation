@@ -2,7 +2,7 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from .views import home, post, arxiv, aasjobmap
+from aesthetic_computation.views import home, post, arxiv, aasjobmap
 
 urlpatterns = [
     # index
