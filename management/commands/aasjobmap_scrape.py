@@ -84,6 +84,8 @@ class Command(BaseCommand):
                 location_name = "Garching, Germany"
             if "Berlin/" in location_name:
                 location_name = "Berlin, Germany"
+            if "and La Serena" in location_name:
+                location_name = "La Serena, Coquimbo"
 
             # geolocate to (latitude,longitude), caching
             if location_name in geocache:

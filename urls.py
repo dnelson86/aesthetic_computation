@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^arxiv707/(?P<date>[A-Za-z0-9\-]+)/$', arxiv, name='arxiv'),
 
     # admin
-    url(r'^admin707/', admin.site.urls),
+    url(r'^admin707/', admin.site.urls, name='admin'),
 
     # aas job map
     url(r'^aasjobmap/', aasjobmap, name='aasjobmap'),
@@ -25,5 +25,5 @@ urlpatterns = [
     url(r'^(?P<category_name>[A-Za-z0-9&\-]+)/', home, name='category'),
 ]
 
-handler404 = '.views.handler404'
-handler500 = '.views.handler500'
+handler404 = 'aesthetic_computation.views.handler404'
+handler500 = 'aesthetic_computation.views.handler500'
