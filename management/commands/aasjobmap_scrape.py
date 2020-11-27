@@ -22,6 +22,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # init geolocator
+        np.random.seed(424242)
         geolocator = Nominatim(user_agent="aasjobmap_app", timeout=5)
 
         # load geocache
@@ -84,15 +85,24 @@ class Command(BaseCommand):
                 location_name = "Garching, Germany"
             if "Berlin/" in location_name:
                 location_name = "Berlin, Germany"
-            if "and La Serena" in location_name:
+            if ("La Serena or" in location_name) or ("and La Serena" in location_name):
                 location_name = "La Serena, Coquimbo"
+            if "Versoix (between" in location_name:
+                location_name = "Versoix, Switzerland"
+            if "Huntsvulle" in location_name:
+                location_name = "Huntsville, AL"
+            if "Kg.s Lyngby" in location_name:
+                location_name = "Lyngby, Copenhagen"
+            if " and " in location_name:
+                location_name = location_name.split(" and ")[0] # first
 
             # geolocate to (latitude,longitude), caching
             if location_name in geocache:
                 lat, lon = geocache[location_name].latitude, geocache[location_name].longitude
 
                 # add small random perturbation to prevent marker overlap
-                if location_name in noted_locations:
+                # better to always include, in case people spell the locations slightly differently
+                if 1: #location_name in noted_locations:
                     lat += np.random.uniform(low=self.random_amp/5, high=self.random_amp)
                     lon += np.random.uniform(low=self.random_amp/5, high=self.random_amp)
             else:

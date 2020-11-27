@@ -72,7 +72,7 @@ DATABASES = {
 
 SECRET_KEY = secauth.sec_key
 
-#ADMINS = (('Dylan Nelson','dnelson@mpa-garching.mpg.de'))
+#ADMINS = (('Dylan Nelson','dnelson@uni-heidelberg.de'))
 PREPEND_WWW = True
 
 # Internationalization ( https://docs.djangoproject.com/en/1.6/topics/i18n/ )
