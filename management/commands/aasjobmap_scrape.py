@@ -91,6 +91,8 @@ class Command(BaseCommand):
                 location_name = "Versoix, Switzerland"
             if "Huntsvulle" in location_name:
                 location_name = "Huntsville, AL"
+            if "Barcelona" in location_name:
+                location_name = "Barcelona, Spain"
             if "Kg.s Lyngby" in location_name:
                 location_name = "Lyngby, Copenhagen"
             if " and " in location_name:
