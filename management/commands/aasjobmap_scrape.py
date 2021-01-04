@@ -95,6 +95,8 @@ class Command(BaseCommand):
                 location_name = "Barcelona, Spain"
             if "Kg.s Lyngby" in location_name:
                 location_name = "Lyngby, Copenhagen"
+            if "Durham, Durham" in location_name:
+                location_name = "Durham, UK" # not NC
             if " and " in location_name:
                 location_name = location_name.split(" and ")[0] # first
 
