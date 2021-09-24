@@ -35,7 +35,8 @@ class Command(BaseCommand):
             geocache = {}
 
         # retrieve/load aas website
-        lines = [line.decode('utf-8') for line in urllib.request.urlopen(self.baselink).readlines()]
+        req = urllib.request.Request(self.baselink, headers={'User-Agent':'Mozilla/5.0'})
+        lines = [line.decode('utf-8') for line in urllib.request.urlopen(req).readlines()]
 
         # save last updated date
         jobs = []
