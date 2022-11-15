@@ -1,9 +1,12 @@
 {% extends "ac/base.html" %}
 {% load staticfiles %}
 
+{% block headercontent %}
+{% endblock %}
+
 {% block content %}
 <div class="outer-container">
-    <div class="container{{wide_entry}} single-entry">
+    <div class="container single-entry">
 
         <div class="row">
             <div class="col-12 no-padding">
@@ -24,15 +27,19 @@
                 </span>
             </div>
         </div>
+    </div>
 
+    <div class="container{{wide_entry}} single-entry">
         <div class="row">
-            <div class="col-12 no-padding" style="">
+            <div class="col-12 no-padding" style="text-align: center;">
                 <figure class="big-img">
                     <img src="{{ post.image_large.url }}" alt="">
                 </figure>
             </div>
         </div>
+    </div>
 
+    <div class="container single-entry">
         <div class="row no-padding">
             <div class="col-12 col-lg-8">
                 <h1 class="entry-header">{{ post.title }}</h1>
@@ -82,6 +89,7 @@
 
                 </div>
             </div>
+
         </div>
 
 

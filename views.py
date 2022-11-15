@@ -60,11 +60,13 @@ def post(request, id):
             wide_entry = ' wide-entry'
         if width >= 1700:
             wide_entry += ' wide-entry-xl'
+        if width >= 2300:
+            wide_entry += ' wide-entry-xxl'
     except:
         pass
 
     # render
-    context = {'post':post, 'cats':cats, 'wide_entry':wide_entry,
+    context = {'post':post, 'cats':cats, 'wide_entry':wide_entry, 'width':width, 
                'prev_post_id':prev_post_id, 'next_post_id':next_post_id}
     return render(request, 'ac/post.html', context)
 

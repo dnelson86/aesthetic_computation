@@ -100,11 +100,13 @@ h3 {
 }
 */
 
+.outer-container {
+  margin-bottom: 70px;
+}
 
 @media screen and (min-width: 992px) {
     .outer-container {
-        margin-left: 80px; /* 80 px */
-        /*border: 1px solid red;*/
+        margin-left: 80px;
     }
 }
 
@@ -437,16 +439,21 @@ p.info-txt {
   /* only add wide-entry class next to 'container' if available image width is at least 1400px */
   /* and note this only takes effect for large screens (1920+) */
   .wide-entry {
-      max-width: 1400px; /* can be 100% for full */
+      max-width: 1600px; /* can be 100% for full */
   }
 }
 
 @media (min-width: 2500px) {
   .wide-entry-xl {
-      max-width: 1700px;
+      max-width: 2200px;
   }
 }
 
+@media (min-width: 3100px) {
+  .wide-entry-xxl {
+      max-width: 2800px;
+  }
+}
 
 #post-nav {
     width: 100%;
@@ -470,12 +477,16 @@ p.info-txt {
 
 .single-entry {
     padding-top: 5px;
-    padding-bottom: 70px;
 }
 
 figure.big-img img {
     max-width: 100%;
-    min-width: 100%;
+    /*min-width: 100%;*/
+    /*width: auto;*/
+    max-height: 86vh;
+    /*margin: 0 auto;
+    display: block;
+    object-fit: fit;*/
     /*padding: 5px;
     border: 1px solid #ccc;*/
 }
