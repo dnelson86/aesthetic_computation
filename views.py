@@ -78,22 +78,33 @@ def arxiv(request, date=None):
 
     baseurl = MEDIA_URL.replace("projects/","arxiv/")
 
-    # get list of directories
+    # get list of directories (daily image scrape)
     dirs = glob.glob(MEDIA_ROOT + "../arxiv/*")
     dirs.sort(key = os.path.getmtime)
     dirs = [dir.rsplit("/")[-1] for dir in dirs]
 
+    # get list of directories (ITA gallery)
+    dirs2 = glob.glob(MEDIA_ROOT + "../arxivpubs/*")
+    dirs2.sort(key = os.path.getmtime)
+    dirs2 = [dir.rsplit("/")[-1] for dir in dirs2 if '.txt' not in dir]
+
     # if a date specified, get list of all filenames too
     images = []
-    if date is not None and date in dirs:
+    if date is not None and date in dirs + dirs2:
         images = glob.glob(MEDIA_ROOT + "../arxiv/%s/*" % date)
+        if len(images) == 0:
+            # hack to detect arxivpubs/ request
+            images = glob.glob(MEDIA_ROOT + "../arxivpubs/%s/*" % date)
+            baseurl = MEDIA_URL.replace("projects/","arxivpubs/")
+
         images = [image.rsplit("/")[-1] for image in images]
         images.sort()
 
         # list of (image filename, arxiv ID) tuples
         images = [[image,image.split("_")[0]] for image in images]
 
-    context = {'dirs':dirs, 'date':date, 'images':images, 'baseurl':baseurl}
+    context = {'dirs':dirs, 'date':date, 'images':images, 'baseurl':baseurl, # daily image scrape
+               'dirs2':dirs2} # ITA gallery
     return render(request, 'ac/arxiv.html', context)
 
 # aas job map
