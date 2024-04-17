@@ -40,7 +40,7 @@ class Command(BaseCommand):
         # get today's arxiv postings
         pubs = []
 
-        arxivUrl = 'http://export.arxiv.org/rss/astro-ph/new?version=2.0'
+        arxivUrl = 'http://rss.arxiv.org/rss/astro-ph' # /new/?version=2.0
         
         # get page and parse XML
         arxiv = minidom.parse(urlopen(arxivUrl))
@@ -51,13 +51,11 @@ class Command(BaseCommand):
             title = title[:title.rfind(' (arXiv')]
 
             link  = item.getElementsByTagName('link')[0].childNodes[0].data
+            link  = link.replace('rss.arxiv.org','www.arxiv.org') # fix broken rss
             id    = link[link.rfind('/')+1:]
 
-            desc      = item.getElementsByTagName('description')[0].childNodes[0].data
-            authStart = desc.find('Authors:')
-            authEnd   = desc.find('</div>',authStart)
-            abstract  = desc[authEnd+1:]
-            abstract  = re.sub('<[^<]+?>', '', abstract).strip() # strip all html tags
+            abstract  = item.getElementsByTagName('description')[0].childNodes[0].data
+            if 'Abstract:' in abstract: abstract = abstract[abstract.find('Abstract:')+9:]
 
             # keep if abstract contains one of our search string(s)
             for searchStr in searchStrs:
