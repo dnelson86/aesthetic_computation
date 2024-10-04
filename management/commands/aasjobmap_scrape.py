@@ -47,32 +47,39 @@ class Command(BaseCommand):
 
         for i, line in enumerate(lines):
             # identify category (progressively down the page)
-            if '<h1 id="FacPosNonTen">' in line:
+            if 'Visiting and Non-tenure Faculty Positions' in line:
                 curtype = "other"
-            if '<h1 id="FacPosTen">' in line:
+            if 'Tenure and Tenure-track Faculty Positions' in line:
                 curtype = "faculty"
-            if '<h1 id="PostDocFellow">' in line:
+            if 'Post-doctoral Positions and Fellowships' in line:
                 curtype = "postdoc"
-            if '<h1 id="PreDocGrad">' in line:
+            if 'Pre-doctoral / Graduate Positions' in line:
                 curtype = "other"
             # several others after, which are all also "other"
 
-            # skip non-job lines
-            if '<a href="/ad/' not in line:
+            # detect start of new ad
+            if '<a href="/jobregister/ad/' not in line:
                 continue
 
-            # detect first lines of each section (no linebreak)
-            if "</thead><tbody>" in line:
-                line = line.split("</thead><tbody>")[1]
+            # link and title on this line
+            line = line.split('<a href="')[1]
+            link = line.split('" hreflang="en">')[0]
 
-            # split into fields
-            cells = line.replace("</a>","").split("</td><td>")
-            cells[0] = cells[0].split("<a href=\"")[1]
+            title = line.split('" hreflang="en">')[1].split('</a>')[0]
 
-            link, title = cells[0].split("\">")
+            # institute on next line
+            institute = lines[i+1].split('views-field-field-institution">')[1].split("</td>")[0]
+            institute = institute.strip()
 
-            institute = cells[1]
-            location_name = cells[2]
+            # location on next next line
+            if 'locality' not in lines[i+2]:
+                location_name = institute # not specified beyond this
+            else:
+                location_name = lines[i+2].split('<span class="locality">')[1]
+                location_name = location_name.replace('</span>, <span class="administrative-area">', ', ')
+                location_name = location_name.replace('</span>-<span class="administrative-area">', ', ')
+                location_name = location_name.replace('</span> <span class="administrative-area">', ', ')
+                location_name = location_name.replace('</span><br>','').strip()
 
             # any pecularities to hack before geolocating?
             if location_name[-12:] == ", California":
