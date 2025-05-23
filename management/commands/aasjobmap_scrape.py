@@ -4,6 +4,7 @@ from django.utils import timezone
 import json
 import pickle
 import urllib
+import ssl
 import numpy as np
 
 from os.path import isfile
@@ -13,7 +14,7 @@ from geopy.geocoders import Nominatim
 class Command(BaseCommand):
     """ Download and parse the AAS job register page, create JSON file."""
 
-    baselink = "https://jobregister.aas.org"
+    baselink = "https://23.185.0.4/jobregister" #"https://jobregister.aas.org"
     savepath = "/var/www/html/static/ac/"
     random_amp = 0.02 # in {lat,long} for multiple entries in one city
 
@@ -35,8 +36,13 @@ class Command(BaseCommand):
             geocache = {}
 
         # retrieve/load aas website
-        req = urllib.request.Request(self.baselink, headers={'User-Agent':'Mozilla/5.0'})
-        lines = [line.decode('utf-8') for line in urllib.request.urlopen(req).readlines()]
+        #req = urllib.request.Request(self.baselink, headers={'User-Agent':'Mozilla/5.0'})
+        #lines = [line.decode('utf-8') for line in urllib.request.urlopen(req).readlines()]
+
+        # retrieve (avoid cloudflare)
+        req = urllib.request.Request(self.baselink, headers={'User-Agent':'Mozilla/5.0','Host':'aas.org'})
+        lines = urllib.request.urlopen(req, context=ssl._create_unverified_context()).readlines()
+        lines = [line.decode('utf-8') for line in lines]
 
         # save last updated date
         jobs = []
@@ -63,7 +69,7 @@ class Command(BaseCommand):
 
             # link and title on this line
             line = line.split('<a href="')[1]
-            link = line.split('" hreflang="en">')[0]
+            link = line.split('" hreflang="en">')[0].replace("/jobregister","")
 
             title = line.split('" hreflang="en">')[1].split('</a>')[0]
 
@@ -105,6 +111,22 @@ class Command(BaseCommand):
                 location_name = "Lyngby, Copenhagen"
             if "Durham, Durham" in location_name:
                 location_name = "Durham, UK" # not NC
+            if "Taipei City" in location_name:
+                location_name = "Taipei, Taiwan"
+            if "Caltech" in location_name:
+                location_name = "Pasadena, CA"
+            if "Shanghai" in location_name:
+                location_name = "Shanghai, China"
+            if "Flatiron Institute" in location_name:
+                location_name = "New York City, NY"
+            if "NOIRLab" in location_name:
+                location_name = "Tucson, AZ"
+            if "Hawaii" in location_name:
+                location_name = "Honolulu, HI"
+            if "Max Planck Institute for Astronomy" in location_name:
+                location_name = "Heidelberg, Germany"
+            if "National Solar Observatory" in location_name:
+                location_name = "Pukalani, Maui, HI"
             if " and " in location_name:
                 location_name = location_name.split(" and ")[0] # first
 
