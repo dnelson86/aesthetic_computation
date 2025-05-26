@@ -15,6 +15,7 @@ class Command(BaseCommand):
     """ Download and parse the AAS job register page, create JSON file."""
 
     baselink = "https://23.185.0.4/jobregister" #"https://jobregister.aas.org"
+    baselink_to = "https://www.aas.org/jobregister"
     savepath = "/var/www/html/static/ac/"
     random_amp = 0.02 # in {lat,long} for multiple entries in one city
 
@@ -170,7 +171,7 @@ class Command(BaseCommand):
                 noted_locations.append(location_name)
 
             # add job
-            job = {'link':self.baselink + link,
+            job = {'link':self.baselink_to + link,
                    'title':title,
                    'type':curtype,
                    'location':location_name,
